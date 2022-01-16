@@ -74,5 +74,25 @@
      - Source Files 右クリック - Add - New Item - main.c を追加
         - **拡張子は.cppではなく、.cに変更すること**、.cpp だと Makefile に認識されない
 
+## リソース
+- スプライト
+    - XXX.res
+        - 4 x 4 セル (32 x 32) の場合
+        - 名前 SpName は任意
+        ~~~
+        SPRITE SpName "XXX.png" 4 4 BEST
+        ~~~
+    - XXX.png
+        - 16色で保存すること
+        - 黒が透明色
+        - 縦に並べていく
+        - 横に並べた場合はアニメーション番号が振られる
+    - コードから使う例
+        ~~~
+        #include "XXX.h"
+        VDP_setPalleteColors(PAL0, SpName.palette->data, 16);
+        Sprite = SPR_addSprite(&SpName, X, y, TILE_ATTR(PAL0, 0, 0, 0));
+        ~~~
+<!--
 ## VS Code からのビルド、実行
-- a
+-->

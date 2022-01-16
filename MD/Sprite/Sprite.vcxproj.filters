@@ -20,8 +20,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\define.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Image Include="res\SpriteData.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

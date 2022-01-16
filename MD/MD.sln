@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloWorld", "HelloWorld\He
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GamePad", "GamePad\GamePad.vcxproj", "{89FC4968-330B-4F09-A7CD-4F16DE9F758C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sprite", "Sprite\Sprite.vcxproj", "{0A437797-5426-4FBF-8A56-62867C57A583}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{89FC4968-330B-4F09-A7CD-4F16DE9F758C}.Release|x64.Build.0 = Release|x64
 		{89FC4968-330B-4F09-A7CD-4F16DE9F758C}.Release|x86.ActiveCfg = Release|Win32
 		{89FC4968-330B-4F09-A7CD-4F16DE9F758C}.Release|x86.Build.0 = Release|Win32
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Debug|x64.ActiveCfg = Debug|x64
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Debug|x64.Build.0 = Debug|x64
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Debug|x86.ActiveCfg = Debug|Win32
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Debug|x86.Build.0 = Debug|Win32
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Release|x64.ActiveCfg = Release|x64
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Release|x64.Build.0 = Release|x64
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Release|x86.ActiveCfg = Release|Win32
+		{0A437797-5426-4FBF-8A56-62867C57A583}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

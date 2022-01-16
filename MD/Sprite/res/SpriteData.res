@@ -1,0 +1,1 @@
+SPRITE SpriteData "SpriteData.bmp" 4 4 BEST

@@ -1,10 +1,54 @@
 #include <genesis.h>
 
-#define COUNTOF(x) (sizeof(x) / sizeof(x[0]))
+#include "..\..\define.h"
+
+void DrawKeyState(const u16 KeyState, const u16 KeyTrig, const u8 x, const u8 y)
+{
+	(KeyState & BUTTON_UP) ? VDP_drawText("+", 1 + x, 0 + y) : VDP_drawText("-", 1 + x, 0 + y);
+	(KeyState & BUTTON_RIGHT) ? VDP_drawText("+", 2 + x, 1 + y) : VDP_drawText("-", 2 + x, 1 + y);
+	(KeyState & BUTTON_DOWN) ? VDP_drawText("+", 1 + x, 2 + y) : VDP_drawText("-", 1 + x, 2 + y);
+	(KeyState & BUTTON_LEFT) ? VDP_drawText("+", 0 + x, 1 + y) : VDP_drawText("-", 0 + x, 1 + y);
+	if (KeyTrig & BUTTON_UP) VDP_drawText("@", 1 + x, 0 + y);
+	if (KeyTrig & BUTTON_RIGHT) VDP_drawText("@", 2 + x, 1 + y);
+	if (KeyTrig & BUTTON_DOWN) VDP_drawText("@", 1 + x, 2 + y);
+	if (KeyTrig & BUTTON_LEFT) VDP_drawText("@", 0 + x, 1 + y);
+
+	(KeyState & BUTTON_START) ? VDP_drawText("+", 4 + x, 2 + y) : VDP_drawText("-", 4 + x, 2 + y);
+	if (KeyTrig & BUTTON_START) VDP_drawText("@", 4 + x, 2 + y);
+
+	(KeyState & BUTTON_MODE) ? VDP_drawText("+", 8 + x, 0 + y) : VDP_drawText("-", 8 + x, 0 + y);
+	if (KeyTrig & BUTTON_MODE) VDP_drawText("@", 8 + x, 0 + y);
+
+	(KeyState & BUTTON_X) ? VDP_drawText("+", 6 + x, 1 + y) : VDP_drawText("-", 6 + x, 1 + y);
+	(KeyState & BUTTON_Y) ? VDP_drawText("+", 7 + x, 1 + y) : VDP_drawText("-", 7 + x, 1 + y);
+	(KeyState & BUTTON_Z) ? VDP_drawText("+", 8 + x, 1 + y) : VDP_drawText("-", 8 + x, 1 + y);
+	if (KeyTrig & BUTTON_X) VDP_drawText("@", 6 + x, 1 + y);
+	if (KeyTrig & BUTTON_Y) VDP_drawText("@", 7 + x, 1 + y);
+	if (KeyTrig & BUTTON_Z) VDP_drawText("@", 8 + x, 1 + y);
+
+	(KeyState & BUTTON_A) ? VDP_drawText("+", 6 + x, 2 + y) : VDP_drawText("-", 6 + x, 2 + y);
+	(KeyState & BUTTON_B) ? VDP_drawText("+", 7 + x, 2 + y) : VDP_drawText("-", 7 + x, 2 + y);
+	(KeyState & BUTTON_C) ? VDP_drawText("+", 8 + x, 2 + y) : VDP_drawText("-", 8 + x, 2 + y);
+	if (KeyTrig & BUTTON_A) VDP_drawText("@", 6 + x, 2 + y);
+	if (KeyTrig & BUTTON_B) VDP_drawText("@", 7 + x, 2 + y);
+	if (KeyTrig & BUTTON_C) VDP_drawText("@", 8 + x, 2 + y);
+
+	char Str[2];
+	intToHex(KeyState, Str, COUNTOF(Str));
+	VDP_drawText(Str, 0, 3 + y);
+}
+
+static void JoyEvent(const u16 Joy, const u16 KeyChanged, const u16 KeyState)
+{
+	//DrawKeyState(KeyState, 0, 0, 5);
+}
+static void VIntEvent() 
+{
+}
 
 int main()
 {
-	u16 x = 0, y = 0;
+	u8 x = 0, y = 0;
 
 	switch (JOY_getPortType(PORT_1)) {
 	case PORT_TYPE_MENACER:
@@ -63,48 +107,19 @@ int main()
 		}
 	}
 
+	JOY_setEventHandler(JoyEvent);
+	SYS_setVIntCallback(VIntEvent);
+
+	char Str[2];
+	u16 PrevState = 0, KeyState = 0;
 	while (1) {
 		SYS_doVBlankProcess();
-		VDP_waitVSync();
 
-		char KeyStateStr[2];
-		u16 PrevState = 0, KeyState = 0;
 		if (PORT_TYPE_UNKNOWN != JOY_getPortType(PORT_1)) {
 			PrevState = KeyState;
 			KeyState = JOY_readJoypad(JOY_1);
 			u16 KeyTrig = (KeyState ^ PrevState) & PrevState;
-
-			(KeyState & BUTTON_UP) ? VDP_drawText("+", 1 + x, 0 + y) : VDP_drawText("-", 1 + x, 0 + y);
-			(KeyState & BUTTON_RIGHT) ? VDP_drawText("+", 2 + x, 1 + y) : VDP_drawText("-", 2 + x, 1 + y);
-			(KeyState & BUTTON_DOWN) ? VDP_drawText("+", 1 + x, 2 + y) : VDP_drawText("-", 1 + x, 2 + y);
-			(KeyState & BUTTON_LEFT) ? VDP_drawText("+", 0 + x, 1 + y) : VDP_drawText("-", 0 + x, 1 + y);
-			if (KeyTrig & BUTTON_UP) VDP_drawText("@", 1 + x, 0 + y);
-			if (KeyTrig & BUTTON_RIGHT) VDP_drawText("@", 2 + x, 1 + y);
-			if (KeyTrig & BUTTON_DOWN) VDP_drawText("@", 1 + x, 2 + y);
-			if (KeyTrig & BUTTON_LEFT) VDP_drawText("@", 0 + x, 1 + y);
-
-			(KeyState & BUTTON_START) ? VDP_drawText("+", 4 + x, 2 + y) : VDP_drawText("-", 4 + x, 2 + y);
-			if (KeyTrig & BUTTON_START) VDP_drawText("@", 4 + x, 2 + y);
-
-			(KeyState & BUTTON_MODE) ? VDP_drawText("+", 8 + x, 0 + y) : VDP_drawText("-", 8 + x, 0 + y);
-			if (KeyTrig & BUTTON_MODE) VDP_drawText("@", 8 + x, 0 + y);
-
-			(KeyState & BUTTON_X) ? VDP_drawText("+", 6 + x, 1 + y) : VDP_drawText("-", 6 + x, 1 + y);
-			(KeyState & BUTTON_Y) ? VDP_drawText("+", 7 + x, 1 + y) : VDP_drawText("-", 7 + x, 1 + y);
-			(KeyState & BUTTON_Z) ? VDP_drawText("+", 8 + x, 1 + y) : VDP_drawText("-", 8 + x, 1 + y);
-			if (KeyTrig & BUTTON_X) VDP_drawText("@", 6 + x, 1 + y);
-			if (KeyTrig & BUTTON_Y) VDP_drawText("@", 7 + x, 1 + y);
-			if (KeyTrig & BUTTON_Z) VDP_drawText("@", 8 + x, 1 + y);
-
-			(KeyState & BUTTON_A) ? VDP_drawText("+", 6 + x, 2 + y) : VDP_drawText("-", 6 + x, 2 + y);
-			(KeyState & BUTTON_B) ? VDP_drawText("+", 7 + x, 2 + y) : VDP_drawText("-", 7 + x, 2 + y);
-			(KeyState & BUTTON_C) ? VDP_drawText("+", 8 + x, 2 + y) : VDP_drawText("-", 8 + x, 2 + y);
-			if (KeyTrig & BUTTON_A) VDP_drawText("@", 6 + x, 2 + y);
-			if (KeyTrig & BUTTON_B) VDP_drawText("@", 7 + x, 2 + y);
-			if (KeyTrig & BUTTON_C) VDP_drawText("@", 8 + x, 2 + y);
-
-			intToHex(KeyState, KeyStateStr, COUNTOF(KeyStateStr));
-			VDP_drawText(KeyStateStr, 0, 3 + y);
+			DrawKeyState(KeyState, KeyTrig, x, y);
 		}
 	}
 }
