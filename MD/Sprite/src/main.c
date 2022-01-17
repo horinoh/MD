@@ -19,7 +19,8 @@ int main()
 		VDP_clearPlane(BG_A, 0);
 		VDP_clearPlane(BG_B, 0);
 
-		SPR_initEx(0);
+		//SPR_initEx(0);
+		SPR_init();
 		for (u8 i = 0; i < 16; ++i) {
 			Sprite* Spr = SPR_addSprite(&SpriteData, 0, 0, TILE_ATTR_FULL(PAL0, TRUE, FALSE, FALSE, 0));
 			SPR_setPosition(Spr, 0, 0);

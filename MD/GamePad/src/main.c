@@ -40,7 +40,12 @@ void DrawKeyState(const u16 KeyState, const u16 KeyTrig, const u8 x, const u8 y)
 
 static void JoyEvent(const u16 Joy, const u16 KeyChanged, const u16 KeyState)
 {
-	//DrawKeyState(KeyState, 0, 0, 5);
+	if (KeyChanged & BUTTON_A) {
+		KLog("A Released");
+	}
+	if (KeyState & BUTTON_A) {
+		KLog("A Pressed");
+	}
 }
 static void VIntEvent() 
 {

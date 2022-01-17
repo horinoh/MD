@@ -2,6 +2,7 @@
 
 int main()
 {
+	KLog("Hello World");
 	VDP_drawText("Hello World", 1, 1);
 
 #define PRI 0
@@ -25,6 +26,6 @@ int main()
 #undef PRI
 
 	while (1) {
-		VDP_waitVSync();
+		SYS_doVBlankProcess();
 	}
 }

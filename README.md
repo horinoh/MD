@@ -21,27 +21,21 @@
             ~~~
             $Fusion out\rom.bin
             ~~~
-
-<!--
-    - [エミュレータ(GDB)](https://gendev.spritesmind.net/page-gdb.html)
+    - [エミュレータ(Debug)](https://gendev.spritesmind.net/page-gdb.html)
         - インストールして環境変数 Path に通しておく
-        - Option - Debug... - 以下にチェック
-            ~~~
-            Blue Screen pause
-            Single instance
-            use GDB
-            ~~~
         - rom.bin を読み込む
-        - GDB
-            ~~~
-            $%GDK_WIN%\bin\gdb
-            ~~~
-            ~~~
-            (gdb)file rom.out
-            (gdb)target remote localhost:6868
-            (gdb)// 以降は通常のGDB操作
-            ~~~
--->
+            - コマンドラインから指定する場合は rom.bin のフルパス指定じゃないとダメみたい
+                ~~~
+                $gens <Fullpath of rom.bin>
+                ~~~
+        - デバッグ
+            - Option - Debug... - Active Development Features にチェック
+                - GDB は有効にしても上手くいかなかった
+            - 以下のようにプログラムに記述しておく
+                ~~~
+                KLog("XXX");
+                ~~~
+            - gens - CPU - Debug - Messages からログ出力が確認できる
 
 ## Visual Studio からのビルド、実行
 - Create a New Project - Makefile Project 
@@ -60,27 +54,41 @@
             ~~~
         - プロジェクトを右クリック - Property - Debugging
             - Command
-                ~~~
-                C:\Fusion364\Fusion
-                ~~~
+                - Release
+                    ~~~
+                    C:\Fusion364\Fusion
+                    ~~~
+                - Debug
+                    ~~~
+                    C:\GensKMod\gens
+                    ~~~
             - Command Arguments
-                ~~~
-                out\rom.bin
+                - Release
+                    ~~~
+                    out\rom.bin
+                    ~~~
+                - Debug 
+                    ~~~
+                    $(ProjectDir)\out\rom.bin
                 ~~~ 
-            - Debugger Type
-                ~~~
-                Script //にしておくと余計な例外が出ない
-                ~~~ 
+            - Debugger Type - Script にしておくと余計な例外が出ない
      - Source Files 右クリック - Add - New Item - main.c を追加
         - **拡張子は.cppではなく、.cに変更すること**、.cpp だと Makefile に認識されない
 
 ## リソース
+- BG
+    - XXX.res
+        - MAP は TILESET を必要とする
+        ~~~
+        TILESET TileName "XXX.png" BEST ALL
+        MAP BGName "XXX.png" TileName BEST
+        ~~~
 - スプライト
     - XXX.res
         - 4 x 4 セル (32 x 32) の場合
         - 名前 SpName は任意
         ~~~
-        SPRITE SpName "XXX.png" 4 4 BEST
+        SPRITE SpName "XXX.png" 4 4 FAST
         ~~~
     - XXX.png
         - 16色で保存すること
