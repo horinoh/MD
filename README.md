@@ -85,10 +85,13 @@
         ~~~
 - スプライト
     - XXX.res
-        - 4 x 4 セル (32 x 32) の場合
         - 名前 SpName は任意
+        - ここでは 4 x 4 セル (32 x 32)
+        - FAST は圧縮方式
+        - アニメーション、ここでは秒間 5 フレーム
+        - コリジョン CIRCLE, BOX, サイズはスプライトの 75%
         ~~~
-        SPRITE SpName "XXX.png" 4 4 FAST
+        SPRITE SpName "XXX.png" 4 4 FAST 5 BOX
         ~~~
     - XXX.png
         - 16色で保存すること
@@ -101,6 +104,37 @@
         VDP_setPalleteColors(PAL0, SpName.palette->data, 16);
         Sprite = SPR_addSprite(&SpName, X, y, TILE_ATTR(PAL0, 0, 0, 0));
         ~~~
+- サウンド
+    ~~~
+    WAV pcm "XXX.wav" PCM
+    WAV _2adpcm "XXX.wav" 2ADPCM
+    WAV _4pcm "XXX.wav" 4PCM
+    WAV xgm "XXX.wav" XGM
+    ~~~
+    ~~~
+    const u8 Loop = TRUE;
+
+    //!< [ PCM ]
+    //!<    SOUND_RATE_8000, 11025, 13400, 16000, 22050, 32000
+    //!<    SOUND_PAN_LEFT, SOUND_PAN_RIGHT, SOUND_PAN_CENTER
+    SND_startPlay_PCM(pcm, sizeof(pcm), SOUND_RATE_8000, SOUND_PAN_CENTER, Loop);
+
+    //!< [ 2ADPCM ]
+    //!<    SOUND_PCM_CH_AUTO, 1, 2
+    SND_startPlay_2ADPCM(_2adpcm, sizeof(_2adpcm), SOUND_PCM_CH_AUTO, Loop);
+
+    //!< [ 4PCM ]
+    //!<    SOUND_PCM_CH_AUTO, 1, 2, 3, 4
+    SND_startPlay_4PCM(_4pcm, sizeof(_4pcm), SOUND_PCM_CH_AUTO, Loop);
+
+    //!< [ XGM ]
+    const u16 i = 64; /* [64, 255] サウンドドライバで[0, 63]は予約されている */
+    XGM_setPCM(i, xgm, sizeof(xgm)); 
+    
+    const u8 Pri = 15; /* 低 [0, 15] 高 */
+    //!<    SOUND_PCM_CH1, 2, 3, 4
+    XGM_startPlayPCM(i, Pri, SOUND_PCM_CH1);
+    ~~~
 <!--
 ## VS Code からのビルド、実行
 -->

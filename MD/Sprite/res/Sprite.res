@@ -1,0 +1,1 @@
+SPRITE sprite "sprite.png" 6 6 FAST 5 BOX
