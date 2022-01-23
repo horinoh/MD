@@ -90,6 +90,7 @@
         - FAST は圧縮方式
         - アニメーション、ここでは秒間 5 フレーム
         - コリジョン CIRCLE, BOX, サイズはスプライトの 75%
+            - CIRCLE と Box の定義が入れ替わっている気がする
         ~~~
         SPRITE SpName "XXX.png" 4 4 FAST 5 BOX
         ~~~
@@ -102,7 +103,7 @@
         ~~~
         #include "XXX.h"
         VDP_setPalleteColors(PAL0, SpName.palette->data, 16);
-        Sprite = SPR_addSprite(&SpName, X, y, TILE_ATTR(PAL0, 0, 0, 0));
+        Sprite = SPR_addSprite(&SpName, x, y, TILE_ATTR(PAL0, 0, FALSE, FALSE));
         ~~~
 - サウンド
     ~~~
@@ -111,30 +112,14 @@
     WAV _4pcm "XXX.wav" 4PCM
     WAV xgm "XXX.wav" XGM
     ~~~
-    ~~~
-    const u8 Loop = TRUE;
-
-    //!< [ PCM ]
-    //!<    SOUND_RATE_8000, 11025, 13400, 16000, 22050, 32000
-    //!<    SOUND_PAN_LEFT, SOUND_PAN_RIGHT, SOUND_PAN_CENTER
-    SND_startPlay_PCM(pcm, sizeof(pcm), SOUND_RATE_8000, SOUND_PAN_CENTER, Loop);
-
-    //!< [ 2ADPCM ]
-    //!<    SOUND_PCM_CH_AUTO, 1, 2
-    SND_startPlay_2ADPCM(_2adpcm, sizeof(_2adpcm), SOUND_PCM_CH_AUTO, Loop);
-
-    //!< [ 4PCM ]
-    //!<    SOUND_PCM_CH_AUTO, 1, 2, 3, 4
-    SND_startPlay_4PCM(_4pcm, sizeof(_4pcm), SOUND_PCM_CH_AUTO, Loop);
-
-    //!< [ XGM ]
-    const u16 i = 64; /* [64, 255] サウンドドライバで[0, 63]は予約されている */
-    XGM_setPCM(i, xgm, sizeof(xgm)); 
-    
-    const u8 Pri = 15; /* 低 [0, 15] 高 */
-    //!<    SOUND_PCM_CH1, 2, 3, 4
-    XGM_startPlayPCM(i, Pri, SOUND_PCM_CH1);
-    ~~~
+    - PCM
+        - 1チャンネル、8ビット、[8, 32]hz、SND_startPlay_PCM()
+    - 2ADPCM
+        - 2チャンネル、4ビット、 22050hz、SND_startPlay_2ADPCM()
+    - 4PCM
+        - 4チャンネル、8ビット、16khz、ボリューム、SND_startPlay_4PCM_ENV()
+    - XGM
+        - 4チャンネル、8ビット、14khz、SND_setPCM_XGM(), SND_startPlayPCM_XGM()
 <!--
 ## VS Code からのビルド、実行
 -->

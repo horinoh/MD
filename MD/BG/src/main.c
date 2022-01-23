@@ -6,9 +6,9 @@
 
 int main()
 {
-	Map* BG_A_Map = NULL;
-	Map* BG_B_Map = NULL;
+	VDP_setScreenWidth320();
 
+#if FALSE
 	//!< ウインドウ面 (BG_A)
 	{
 #if FALSE
@@ -17,9 +17,12 @@ int main()
 		VDP_setWindowVPos(FALSE/*isDown*/, 5); //!< 上からNセル分
 #endif
 	}
+#endif
 
+	Map* BG_A_Map = NULL;
+	Map* BG_B_Map = NULL;
 	SYS_disableInts(); {
-		VDP_setPaletteColors(0, palette.data, sizeof(palette.data));
+		VDP_setPalette(palette.length, palette.data);
 
 		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX, DMA);
 		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX + bga_tileset.numTile, DMA);
