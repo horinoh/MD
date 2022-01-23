@@ -22,15 +22,20 @@ int main()
 	Map* BG_A_Map = NULL;
 	Map* BG_B_Map = NULL;
 	SYS_disableInts(); {
-		VDP_setPalette(palette.length, palette.data);
+		//VDP_setPaletteColors(0, (u16*)palette_black, 64);
+		//VDP_setPalette(palette.length, palette.data);
 
 		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX, DMA);
 		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX + bga_tileset.numTile, DMA);
 
 		BG_A_Map = MAP_create(&bga_map, BG_A, TILE_ATTR_FULL(0, FALSE, FALSE, FALSE, TILE_USERINDEX));
 		BG_B_Map = MAP_create(&bgb_map, BG_B, TILE_ATTR_FULL(0, FALSE, FALSE, FALSE, TILE_USERINDEX + bga_tileset.numTile));
+		//DMA_setBufferSize(9000);
+		//DMA_setBufferSizeToDefault();
 
 	} SYS_enableInts();
+
+	PAL_fadeIn(0/*開始カラーインデックス*/, (4 * 16) - 1/*終了カラーインデックス*/, /*Palette*/palette.data, 20/*フェードフレーム数*/, FALSE/*終了を待つ*/);
 
 	V2f16 Pos; V2f16ZERO(Pos);
 	u16 KeyState = 0;
