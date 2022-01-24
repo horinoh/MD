@@ -11,18 +11,8 @@ int main()
 	//!< スクロール面
 	VDP_setPlanSize(64, 32);
 
-	//!< ウインドウ面 (BG_A上)
-#if FALSE
-	VDP_setWindowHPos(FALSE/*isRight*/, 3); //!< 左からNセル分
-#else
-	VDP_setWindowVPos(FALSE/*isDown*/, 5); //!< 上からNセル分
-#endif
-
 	KLog("Hello World");
-
-	for (u8 i = 0; i < 224 >> 3; ++i) {
-		VDP_drawText("Hello World", 0, i);
-	}
+	VDP_drawText("Hello World", 0, 1);
 
 	//!< わざわざタイルで埋めるバージョン
 #define PRI 0

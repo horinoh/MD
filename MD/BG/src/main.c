@@ -10,32 +10,22 @@ int main()
 
 #if FALSE
 	//!< ウインドウ面 (BG_A)
-	{
-#if FALSE
-		VDP_setWindowHPos(FALSE/*isRight*/, 3); //!< 左からNセル分
-#else
-		VDP_setWindowVPos(FALSE/*isDown*/, 5); //!< 上からNセル分
-#endif
-	}
+	//VDP_setWindowHPos(FALSE/*isRight*/, 3);
+	VDP_setWindowVPos(FALSE/*isDown*/, 5);
 #endif
 
 	Map* BG_A_Map = NULL;
 	Map* BG_B_Map = NULL;
 	SYS_disableInts(); {
-		//VDP_setPaletteColors(0, (u16*)palette_black, 64);
-		//VDP_setPalette(palette.length, palette.data);
+		PAL_setPalette(PAL0, palette.data, DMA);
 
 		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX, DMA);
-		VDP_loadTileSet(&bga_tileset, TILE_USERINDEX + bga_tileset.numTile, DMA);
+		VDP_loadTileSet(&bgb_tileset, TILE_USERINDEX + bga_tileset.numTile, DMA);
 
 		BG_A_Map = MAP_create(&bga_map, BG_A, TILE_ATTR_FULL(0, FALSE, FALSE, FALSE, TILE_USERINDEX));
-		BG_B_Map = MAP_create(&bgb_map, BG_B, TILE_ATTR_FULL(0, FALSE, FALSE, FALSE, TILE_USERINDEX + bga_tileset.numTile));
-		//DMA_setBufferSize(9000);
-		//DMA_setBufferSizeToDefault();
+		//BG_B_Map = MAP_create(&bgb_map, BG_B, TILE_ATTR_FULL(0, FALSE, FALSE, FALSE, TILE_USERINDEX + bga_tileset.numTile));
 
 	} SYS_enableInts();
-
-	PAL_fadeIn(0/*開始カラーインデックス*/, (4 * 16) - 1/*終了カラーインデックス*/, /*Palette*/palette.data, 20/*フェードフレーム数*/, FALSE/*終了を待つ*/);
 
 	V2f16 Pos; V2f16ZERO(Pos);
 	u16 KeyState = 0;
@@ -49,12 +39,20 @@ int main()
 			if (KeyState & BUTTON_RIGHT) { Pos.x = fix16Add(Pos.x, Speed); }
 		}
 
-		MAP_scrollTo(BG_A_Map, fix16ToInt(Pos.x), fix16ToInt(Pos.y));
-		MAP_scrollTo(BG_B_Map, fix16ToInt(Pos.x) >> 1, fix16ToInt(Pos.y) >> 1);
+		if (NULL != BG_A_Map) {
+			MAP_scrollTo(BG_A_Map, fix16ToInt(Pos.x), fix16ToInt(Pos.y));
+		}
+		if (NULL != BG_B_Map) {
+			MAP_scrollTo(BG_B_Map, fix16ToInt(Pos.x) >> 2, fix16ToInt(Pos.y) >> 2);
+		}
 
 		SYS_doVBlankProcess();
 	}
 
-	MEM_free(BG_B_Map);
-	MEM_free(BG_A_Map);
+	if (NULL != BG_A_Map) {
+		MEM_free(BG_A_Map);
+	}
+	if (NULL != BG_B_Map) {
+		MEM_free(BG_B_Map);
+	}
 }
